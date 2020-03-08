@@ -1,0 +1,49 @@
+
+qcom,asus_zt581kl_4545mah_averaged_masterslave_nov30th2015 {
+	/* #2216784_ASUS_ZT581KL_4545mAh_averaged_MasterSlave_Nov30th2015*/
+	qcom,max-voltage-uv = <4400000>;
+	qcom,nom-batt-capacity-mah = <4545>;
+	qcom,batt-id-kohm = <100>;
+	qcom,battery-beta = <3435>;
+	qcom,battery-type = "asus_zt581kl_4545mah_averaged_masterslave_nov30th2015";
+	qcom,chg-rslow-comp-c1 = <2541769>;
+	qcom,chg-rslow-comp-c2 = <2615070>;
+	qcom,chg-rs-to-rslow = <799555>;
+	qcom,chg-rslow-comp-thr = <0x99>;
+	qcom,checksum = <0xC603>;
+	qcom,gui-version = "PMI8950GUI - 2.0.0.15";
+	qcom,fg-profile-data = [
+		 0E 83 85 6B 
+		 0C 69 94 52 
+		 3E 83 06 71 
+		 3A 74 DD 68 
+		 D4 81 22 9B 
+		 1A BE A4 CB 
+		 7D 0E 05 88 
+		 E9 7D CA 81 
+		 40 7C 67 83 
+		 9A 6E 18 89 
+		 59 94 51 82 
+		 1F 98 3E B5 
+		 7B C0 58 15 
+		 2C 12 4F 5A 
+		 14 70 30 FA 
+		 AF 47 F1 44 
+		 5B 49 00 00 
+		 6B 45 3F 3A 
+		 FD 3E 00 00 
+		 00 00 00 00 
+		 00 00 00 00 
+		 83 6B AC 6A 
+		 7A 4A 6F 83 
+		 C1 76 DE 69 
+		 2E 64 1E 7B 
+		 76 75 B4 62 
+		 16 60 8A A8 
+		 23 38 60 5F 
+		 5D A0 71 0C 
+		 28 00 FF 36 
+		 F0 11 30 03 
+		 00 00 00 0C 
+	];
+};

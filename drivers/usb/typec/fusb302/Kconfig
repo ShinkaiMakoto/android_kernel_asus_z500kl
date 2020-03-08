@@ -1,0 +1,9 @@
+# Fairchild typeC/PD controller 
+
+config FUSB_30X
+	tristate "Fairchild typeC/PD controller - FUSB302"
+	depends on TYPEC && GPIOLIB && I2C
+	default n
+	help
+	  Say Y here to enable FUSB302 TypeC/PD support.
+

@@ -1,0 +1,98 @@
+	rt1711@4e {
+		compatible = "richtek,rt1711";
+		reg= <0x4e>;
+		interrupt-parent = <&msm_gpio>;
+		interrupts = <36 2>;    /* MSM GPIO 36, high-to-low edge triggered */
+		rt1711,irq_pin = <&msm_gpio 36 0x00>;
+		asus,otg_en = <&msm_gpio 143 0x00>;
+		vbus_otg-supply = <&smbcharger_charger_otg>;
+		rt-dual,supported_modes = <0>; /* 0: dfp/ufp, 1: dfp, 2: ufp */
+		rt-tcpc,name = "type_c_port0" ; /* tcpc_device's name */
+		rt-tcpc,role_def = <2>; /* 0: SNK Only, 1: SRC Only, 2: DRP, 3: Try.SRC, 4: Try.SNK */
+		rt-tcpc,rp_level = <0>; /* 0: Default, 1: 1.5A, 2: 3.0A */
+		rt-tcpc,notifier_supply_num = <1>; /* the number of notifier supply */
+		pinctrl-names = "default";
+		pinctrl-0 = <&usbc_rt_int_default &rt1715_id_default>;
+		pd-data {
+			/*
+				VSAFE5V = 0, DIRECT_CHARGE = 1, CUSTOM = 2,
+				MAX_POWER = 0x03,
+				MAX_POWER_LV = 0x23, MAX_POWER_LVIC = 0x33
+				MAX_POWER_HV = 0x43, MAX_POWER_HVIC = 0x53
+			*/
+			pd,charging_policy = <0x22>;
+
+			pd,source-pdo-size = <1>;
+			pd,source-pdo-data = <0x00019032>;/* Fixed, 5000mV, 500mA*/
+			pd,sink-pdo-size = <2>;
+			/*Fixed, 5000mV, 500mA*/
+			/*Fixed, 5000mV, 2000mA*/
+			pd,sink-pdo-data = <0x00019032 0x000190c8>;
+
+			/*
+			No DP, host + device
+				pd,id-vdo-size = <3>;
+				pd,id-vdo-data = <0xd00029cf 0x0 0x00010000>;
+			With DP
+				pd,id-vdo-size = <4>;
+				pd,id-vdo-data = <0xec0029cf 0x0 0x00010000 0x11000001>;
+			*/
+
+			pd,id-vdo-size = <4>;
+			pd,id-vdo-data = <0xec0029cf 0x00000000 0x00010000 0x11000001>;
+ 		};
+		dpm_caps {
+			local_dr_power;
+			local_dr_data;
+			//local_ext_power;
+			local_usb_comm;
+			//local_usb_suspend;
+			//local_high_cap;
+			//local_give_back;
+			//local_no_suspend;
+			//local_vconn_supply;
+
+			//attemp_discover_cable_dfp;
+			attemp_enter_dp_mode;
+			attemp_discover_cable;
+			attemp_discover_id;
+
+			/* 0: disable, 1: prefer_snk, 2: prefer_src */
+			pr_check = <0>;
+			//pr_reject_as_source;
+			//pr_reject_as_sink;
+			pr_check_gp_source;
+			//pr_check_gp_sink;
+
+			/* 0: disable, 1: prefer_ufp, 2: prefer_dfp */
+			dr_check = <0>;
+			//dr_reject_as_dfp;
+			//dr_reject_as_ufp;
+
+ 		};
+		displayport {
+			/* connection type = both, ufp_d, dfp_d*/
+			1st_connection = "dfp_d";
+			2nd_connection ="dfp_d";
+			//ssignal,dp_v13;
+			//signal,dp_gen2;
+			//usbr20_not_used;
+			//typec,receptacle;
+			ufp_d {
+				//pin_assignment,mode_a;
+				//pin_assignment,mode_b;
+				//pin_assignment,mode_c;
+				//pin_assignment,mode_d;
+				//pin_assignment,mode_e;
+ 			};
+			dfp_d {
+				/* Only support mode C & D */
+				//pin_assignment,mode_a;
+				//pin_assignment,mode_b;
+				pin_assignment,mode_c;
+				pin_assignment,mode_d;
+				//pin_assignment,mode_e;
+				//pin_assignment,mode_f;
+ 			};
+ 		};
+ 	};

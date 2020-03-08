@@ -1,0 +1,356 @@
+/*
+ * Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+
+#include "msm8956-v1.1.dtsi"
+#include "msm8956-cdp.dtsi"
+#include "msm8976-camera-sensor-cdp-ZT581KL.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8956v1.1 CDP";
+	compatible = "qcom,msm8956-cdp", "qcom,msm8956", "qcom,cdp";
+	qcom,board-id= <1 0>;
+};
+
+&i2c_4 { /* BLSP1 QUP4 */
+        focaltech@38{
+                compatible = "focaltech,fts";
+                reg = <0x38>;
+                interrupt-parent = <&msm_gpio>;
+                interrupts = <65 0x2008>;
+                focaltech,name = "fts";
+                focaltech,family-id = <0x54>;
+                focaltech,power-gpio = <&msm_gpio 17 0x0>;
+                focaltech,reset-gpio = <&msm_gpio 64 0x0>;
+                focaltech,irq-gpio =<&msm_gpio 65 0x2008>;
+                focaltech,tpid-gpio = <&msm_gpio 38 0x00>;
+                focaltech,lcmid-gpio = <&msm_gpio 126 0x00>;
+                focaltech,id1-gpio = <&msm_gpio 109 0x00>;
+                focaltech,id2-gpio = <&msm_gpio 114 0x00>;
+                focaltech,id3-gpio = <&msm_gpio 121 0x00>;
+                focaltech,display-coords = <0 0 1536 2048>;
+                focaltech,panel-coords = <0 0 1080 2000>;
+                focaltech,button-map= <70 150 907>;
+                focaltech,no-force-update; focaltech,i2c-pull-up;
+                focaltech,group-id = <1>;
+                focaltech,hard-reset-delay-ms = <20>;
+                focaltech,soft-reset-delay-ms = <200>;
+                focaltech,num-max-touches = <10>;
+                focaltech,fw-name = "FT_Upgrade_App.i";
+                focaltech,fw-delay-aa-ms = <50>;
+                focaltech,fw-delay-55-ms = <30>;
+                focaltech,fw-upgrade-id1 = <0x79>;
+                focaltech,fw-upgrade-id2 = <0x03>;
+                focaltech,fw-delay-readid-ms = <10>;
+                focaltech,fw-delay-era-flsh-ms = <2000>;
+        };
+};
+
+/* DISPLAY START*/
+
+#include "dsi-panel-tianma-r63319-dualmipi-1536x2048-video.dtsi"
+#include "dsi-panel-tianma-r63319-dualmipi-1536x2048-cmd.dtsi"
+#include "dsi-panel-sharp-nt35523-dualmipi-1536x2048-cmd.dtsi"
+
+&dsi_tianma_r63319_dualmipi_1536x2048_video {
+/*  qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;*/
+    qcom,panel-supply-entries = <&dsi_panel_pwr_supply_zt581kl>;
+    qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+    qcom,mdss-dsi-bl-min-level = <1>;
+    qcom,mdss-dsi-bl-max-level = <4095>;
+/*  qcom,mdss-dsi-pan-enable-dynamic-fps;*/
+/*  qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_hfp";*/
+};
+
+&dsi_tianma_r63319_dualmipi_1536x2048_cmd {
+/*  qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;*/
+qcom,panel-supply-entries = <&dsi_panel_pwr_supply_zt581kl>;
+qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+qcom,mdss-dsi-bl-min-level = <1>;
+qcom,mdss-dsi-bl-max-level = <4095>;
+/*  qcom,mdss-dsi-pan-enable-dynamic-fps;*/
+/*  qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_hfp";*/
+};
+
+&dsi_sharp_nt35523_dualmipi_1536x2048_cmd {
+/*  qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;*/
+qcom,panel-supply-entries = <&dsi_panel_pwr_supply_zt581kl>;
+qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+qcom,mdss-dsi-bl-min-level = <1>;
+qcom,mdss-dsi-bl-max-level = <4095>;
+/*  qcom,mdss-dsi-pan-enable-dynamic-fps;*/
+/*  qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_hfp";*/
+};
+
+&soc {
+    tlmm_pinmux: pinctrl@1000000 {
+        /delete-node/ pmx_nfc_reset;
+        /delete-node/ tpiu_seta_14;
+    };
+};
+
+&soc {
+    iris2_io{
+	 compatible = "pw,iris2_io";
+	 qcom,iris-1v1-1v8-en-gpio = <&msm_gpio 20 0>;
+	 qcom,iris-rst-gpio = <&msm_gpio 69 0>;
+	 clocks = <&clock_gcc clk_bb_clk2>, <&clock_gcc clk_bimc_usb_clk>, <&clock_gcc clk_snoc_usb_clk>;
+	 clock-names = "iris2_clk", "bimc_clk", "snoc_clk";
+    };
+};
+
+&pmx_mdss {
+    qcom,num-grp-pins = <2>;
+    qcom,pins = <&gp 25>, <&gp 126>;
+};
+
+&mdss_dsi0 {
+    qcom,dsi-pref-prim-pan = <&dsi_tianma_r63319_dualmipi_1536x2048_video>;
+    qcom,dsi-pref-prim-pan-with-iris = <&dsi_tianma_r63319_dualmipi_1536x2048_cmd>;
+    qcom,dsi-pref-prim-pan-with-iris-lcm2 = <&dsi_sharp_nt35523_dualmipi_1536x2048_cmd>;
+
+    qcom,platform-reset-gpio = <&msm_gpio 25 0>;
+    /delete-property/ qcom,platform-bklight-en-gpio;
+    /delete-property/ qcom,panel-mode-gpio;
+    qcom,panel-id-gpio = <&msm_gpio 126 0>;
+};
+
+&mdss_dsi1 {
+    qcom,dsi-pref-prim-pan = <&dsi_tianma_r63319_dualmipi_1536x2048_video>;
+    qcom,dsi-pref-prim-pan-with-iris = <&dsi_tianma_r63319_dualmipi_1536x2048_cmd>;
+    qcom,dsi-pref-prim-pan-with-iris-lcm2 = <&dsi_sharp_nt35523_dualmipi_1536x2048_cmd>;
+
+    qcom,platform-reset-gpio = <&msm_gpio 25 0>;
+    /delete-property/ qcom,platform-bklight-en-gpio;
+    /delete-property/ qcom,panel-mode-gpio;
+    qcom,panel-id-gpio = <&msm_gpio 126 0>;
+};
+
+&spmi_bus{
+    qcom,pmi8950@3 {
+        qcom,leds@d800 {
+            qcom,led-strings-list = [00 01 02 03];
+        };
+    };
+};
+
+&soc {
+    dsi_panel_pwr_supply_zt581kl: dsi_panel_pwr_supply_zt581kl {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        qcom,panel-supply-entry@0 {
+            reg = <0>;
+            qcom,supply-name = "vddio";
+            qcom,supply-min-voltage = <1800000>;
+            qcom,supply-max-voltage = <1800000>;
+            qcom,supply-enable-load = <100000>;
+            qcom,supply-disable-load = <100>;
+        };
+
+        qcom,panel-supply-entry@1 {
+            reg = <1>;
+            qcom,supply-name = "lab";
+            qcom,supply-min-voltage = <4600000>;
+            qcom,supply-max-voltage = <6000000>;
+            qcom,supply-enable-load = <100000>;
+            qcom,supply-disable-load = <100>;
+        };
+
+        qcom,panel-supply-entry@2 {
+            reg = <2>;
+            qcom,supply-name = "ibb";
+            qcom,supply-min-voltage = <4600000>;
+            qcom,supply-max-voltage = <6000000>;
+            qcom,supply-enable-load = <100000>;
+            qcom,supply-disable-load = <100>;
+            qcom,supply-post-on-sleep = <20>;
+        };
+    };
+
+    mdss_mdp: qcom,mdss_mdp@1a00000 {
+        mdss_fb0: qcom,mdss_fb_primary {
+            /delete-property/ qcom,mdss-fb-splash-logo-enabled;
+        };
+    };
+};
+
+/* DISPLAY END*/
+
+/* USB Start */
+&i2c_2 {
+    usb-type-c-ti@60 {
+        compatible = "ti,usb-type-c";
+        reg = <0x60>;
+        interrupt-parent = <&msm_gpio>;
+        interrupts = <36 2>;    /* MSM GPIO 36, high-to-low edge triggered */
+        ti,enb-names = "default", "SR";
+        ti,enb-pins = <2>;
+        ti,enb-gpio = <&msm_gpio 19 1>, <&msm_gpio 21 1>; /* low active */
+        pinctrl-names = "default";
+        pinctrl-0 = <&usbc_int_default>;
+        ti,usb-ccirq = <&msm_gpio 36 1>;
+        tusb320_typec,gpio_enb-names = "default", "SR";
+        tusb320_typec,gpio_enb-pins = <2>;
+        tusb320_typec,gpio_enb = <&msm_gpio 19 1>, <&msm_gpio 21 1>;
+        tusb320_typec,gpio_intb = <&msm_gpio 36 1>;
+    };
+
+    ti-tps6128x@75 {
+        compatible = "ti,tps6128x";
+        reg = <0x75>;
+    };
+
+    upi-us5587@38 {
+        compatible = "upi,us5587";
+        reg = <0x38>;
+        adc_sw_en = <&msm_gpio 115 0>;
+	 /*shilun*/
+        qcom,adcpwren_pmi_gp1 = <&pmi8950_gpios 1 0>;
+    };
+};
+
+&soc {
+    /* delete unused node avoid use same gpio 19 for cc enb pin*/
+    /delete-node/ pmx_i2c_8;
+};
+
+&usb_otg {
+        qcom,hsusb-otg-phy-init-seq =
+             <0x73 0x80 0x3f 0x81 0x1b 0x82 0xffffffff>;
+};
+
+/* USB End */
+
+/* AUDIO Start */
+
+&soc {
+    sound {
+        compatible = "qcom,msm8952-audio-codec";
+        qcom,model = "msm8952-snd-card";
+        reg = <0xc051000 0x4>,
+              <0xc051004 0x4>,
+              <0xc055000 0x4>,
+              <0xc052000 0x4>;
+        reg-names = "csr_gp_io_mux_mic_ctl",
+                    "csr_gp_io_mux_spkr_ctl",
+                    "csr_gp_io_lpaif_pri_pcm_pri_mode_muxsel",
+                    "csr_gp_io_mux_quin_ctl";
+
+        qcom,msm-ext-pa = "primary";
+        qcom,msm-mclk-freq = <9600000>;
+        qcom,msm-mbhc-hphl-swh = <1>;
+        qcom,msm-mbhc-gnd-swh = <0>;
+        qcom,msm-hs-micbias-type = "internal";
+        qcom,msm-micbias1-ext-cap;
+        qcom,msm-micbias2-ext-cap;
+        qcom,audio-routing =
+                "RX_BIAS", "MCLK",
+                "SPK_RX_BIAS", "MCLK",
+                "INT_LDO_H", "MCLK",
+                "MIC BIAS Internal1", "Handset Mic",
+                "MIC BIAS Internal2", "Headset Mic",
+                "MIC BIAS External", "Secondary Mic",
+                "AMIC1", "MIC BIAS Internal1",
+                "AMIC2", "MIC BIAS Internal2",
+                "AMIC3", "MIC BIAS External",
+                "WSA_SPK OUT", "VDD_WSA_SWITCH",
+                "SpkrMono WSA_IN", "WSA_SPK OUT";
+        qcom,msm-gpios =
+                "pri_i2s";
+        qcom,pinctrl-names =
+                "all_off",
+                "pri_i2s_act";
+        pinctrl-names =
+                "all_off",
+                "pri_i2s_act";
+        pinctrl-0 = <&cdc_pdm_lines_sus &cdc_pdm_lines_2_sus>;
+        pinctrl-1 = <&cdc_pdm_lines_act &cdc_pdm_lines_2_act>;
+        asoc-platform = <&pcm0>, <&pcm1>, <&pcm2>, <&voip>, <&voice>,
+                        <&loopback>, <&compress>, <&hostless>,
+                        <&afe>, <&lsm>, <&routing>, <&lpa>,
+                        <&voice_svc>;
+        asoc-platform-names = "msm-pcm-dsp.0", "msm-pcm-dsp.1",
+                        "msm-pcm-dsp.2", "msm-voip-dsp",
+                        "msm-pcm-voice", "msm-pcm-loopback",
+                        "msm-compress-dsp", "msm-pcm-hostless",
+                        "msm-pcm-afe", "msm-lsm-client",
+                        "msm-pcm-routing", "msm-pcm-lpa",
+                        "msm-voice-svc";
+        asoc-cpu = <&dai_pri_auxpcm>, <&dai_hdmi>,
+                        <&dai_mi2s0>, <&dai_mi2s1>, <&dai_mi2s2>,
+                        <&dai_mi2s3>, <&dai_mi2s5>, <&dai_mi2s6>,
+                        <&bt_sco_rx>, <&bt_sco_tx>, <&int_fm_rx>,
+                        <&int_fm_tx>, <&afe_pcm_rx>, <&afe_pcm_tx>,
+                        <&afe_proxy_rx>, <&afe_proxy_tx>,
+                        <&incall_record_rx>, <&incall_record_tx>,
+                        <&incall_music_rx>, <&incall_music_2_rx>;
+        asoc-cpu-names = "msm-dai-q6-auxpcm.1", "msm-dai-q6-hdmi.8",
+                        "msm-dai-q6-mi2s.0", "msm-dai-q6-mi2s.1",
+                        "msm-dai-q6-mi2s.2", "msm-dai-q6-mi2s.3",
+                        "msm-dai-q6-mi2s.5", "msm-dai-q6-mi2s.6",
+                        /*
+                        "msm-dai-q6-dev.16384", "msm-dai-q6-dev.16385",
+                        "msm-dai-q6-dev.16386", "msm-dai-q6-dev.16387",
+                        "msm-dai-q6-dev.16390", "msm-dai-q6-dev.16391",
+                        "msm-dai-q6-dev.16392", "msm-dai-q6-dev.16393",
+                        */
+                        "msm-dai-q6-dev.12288", "msm-dai-q6-dev.12289",
+                        "msm-dai-q6-dev.12292", "msm-dai-q6-dev.12293",
+                        "msm-dai-q6-dev.224", "msm-dai-q6-dev.225",
+                        "msm-dai-q6-dev.241", "msm-dai-q6-dev.240",
+                        "msm-dai-q6-dev.32771", "msm-dai-q6-dev.32772",
+                        "msm-dai-q6-dev.32773", "msm-dai-q6-dev.32770";
+        asoc-codec = <&stub_codec>, <&pm8950_cajon_dig>;
+        asoc-codec-names = "msm-stub-codec.1", "cajon_codec";
+
+        msm-vdd-wsa-switch-supply = <&pm8950_l13>;
+        qcom,msm-vdd-wsa-switch-voltage = <3075000>;
+        qcom,msm-vdd-wsa-switch-current = <5000>;
+        qcom,right-spk-amp = <&msm_gpio 62 0>;
+    };
+};
+
+/* AUDIO End */
+
+&soc {
+    gpio_keys {
+        compatible = "gpio-keys";
+        input-name = "gpio-keys";
+        pinctrl-names = "tlmm_gpio_key_active","tlmm_gpio_key_suspend";
+        pinctrl-0 = <&gpio_key_active>;
+        pinctrl-1 = <&gpio_key_suspend>;
+
+        vol_up {
+            label = "volume_up";
+            gpios = <&msm_gpio 113 0x1>;
+            linux,input-type = <1>;
+            linux,code = <115>;
+            debounce-interval = <15>;
+        };
+   };
+};
+
+&soc{
+        Hall_sensor {
+                compatible = "ASUS,hall";
+                ASUS,hall-intr-gpio = <&msm_gpio 139 0>;
+                vdd-supply = <&pm8950_l5>;
+        };
+};
+
+&sdhc_2 {
+       /* apply hardware reset */
+       cap-hw-reset;
+};

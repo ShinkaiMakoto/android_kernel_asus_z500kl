@@ -1,0 +1,54 @@
+#
+# Sensor driver configuration
+#
+
+config SENSORS_AL3320A
+        bool "AL3320A Light Sensor"
+        depends on I2C
+
+config SENSORS_AKM8963
+	tristate "AK8963 compass support"
+	default n
+	depends on I2C
+	help
+	  If you say yes here you get support for Asahi Kasei's
+	  orientation sensor AK8963.
+
+config SENSORS_ALS3010
+        bool "ALS3010a Light Sensor at EC base on TX201LA"
+        depends on I2C
+ 
+config SENSORS_AK09911
+        tristate "AK09911 compass support"
+        default n
+        depends on I2C
+        help
+          If you say yes here you get support for Asahi Kasei's
+          orientation sensor AK09911.
+
+config SENSORS_AP3212C
+        bool "AP3121C Light Sensor"
+        depends on I2C
+        
+config SENSORS_PX3212C
+        bool "PX3121C Proximity Sensor"
+        depends on I2C
+        
+config SENSORS_CAP1106
+	bool "CAP1106 CAP sensor"
+	depends on I2C
+       
+config SENSORS_KXTJ9
+        tristate "KXTJ9 g-sensor sensor"
+        depends on I2C
+
+config SENSORS_PX3003B
+        bool "PX3003B Proximity Sensor"
+        depends on I2C
+
+config HALL_SENSOR
+        bool "Hall sensor"
+        default y
+        ---help---
+        Say Y here if you want to enable hall sensor driver
+        If unsure, say N.

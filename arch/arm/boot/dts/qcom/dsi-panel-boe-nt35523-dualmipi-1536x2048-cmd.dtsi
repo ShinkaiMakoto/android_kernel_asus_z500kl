@@ -1,0 +1,198 @@
+/* Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&mdss_mdp {
+	dsi_boe_nt35523_dualmipi_1536x2048_cmd: qcom,mdss_dsi_boe_nt35523_dualmipi_1536x2048_cmd{
+		qcom,mdss-dsi-panel-name =
+			"boe nt35523 dualmipi 1536x2048 cmd";
+		qcom,mdss-dsi-panel-type = "dsi_cmd_mode";
+		qcom,mdss-dsi-panel-framerate = <60>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <768>;
+		qcom,mdss-dsi-panel-height = <2048>;
+		qcom,mdss-dsi-h-front-porch = <100>;
+		qcom,mdss-dsi-h-back-porch = <64>;
+		qcom,mdss-dsi-h-pulse-width = <4>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <32>;
+		qcom,mdss-dsi-v-front-porch = <16>;
+		qcom,mdss-dsi-v-pulse-width = <2>;
+		qcom,mdss-pan-physical-width-dimension = <147>;
+		qcom,mdss-pan-physical-height-dimension = <197>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-on-command = [
+                        15 01 00 00 00 00 02 53 2c
+                        15 01 00 00 00 00 02 51 00
+                        15 01 00 00 00 00 02 55 00
+                        05 01 00 00 3f 00 01 11
+                        05 01 00 00 3f 00 01 29
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command = [15 01 00 00 00 00 02 28 00
+			15 01 00 00 64 00 02 10 00];
+		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+		qcom,mdss-dsi-color-order; /* original has no default setting */
+		qcom,mdss-dsi-underflow-color = <0xff>;
+		qcom,mdss-dsi-border-color = <0>;
+
+		qcom,mdss-dsi-h-sync-pulse = <8>; /* Paddy is 0 , Xutao excel is 8 */
+		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		qcom,mdss-dsi-lane-3-state;
+		qcom,mdss-dsi-panel-timings = [c0 2c 1e 00 58 5c 22 30 22 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x3>;
+		qcom,mdss-dsi-t-clk-pre = <0x24>;
+
+		qcom,mdss-dsi-bl-min-level = <1>;
+		qcom,mdss-dsi-bl-max-level = <4095>;
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-init-delay-us = <1000>;
+		qcom,mdss-dsi-te-dcs-command = <1>;
+		qcom,mdss-dsi-wr-mem-start = <0x2c>;
+		qcom,mdss-dsi-wr-mem-continue = <0x3c>;
+		qcom,mdss-dsi-te-check-enable;
+		qcom,mdss-dsi-te-pin-select = <1>;
+		qcom,mdss-dsi-te-using-te-pin;
+		/*qcom,ulps-enabled;*/
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+		qcom,mdss-dsi-reset-sequence = <0 40>, <1 2>, <0 2>, <1 20>;
+
+		/* below setting need to review */
+		/* iris mipi mode */
+		qcom,iris-mipirx-channel = <0x2>;    /*dual channel*/
+		qcom,iris-mipitx-channel = <0x2>;
+		qcom,iris-mipirx-dsc = <0x0>;        /*non DSC*/
+		qcom,iris-mipitx-dsc = <0x0>;
+		qcom,iris-mipirx-pxl-mode = <0x0>;
+		qcom,iris-mipitx-pxl-mode = <0x1>;
+		qcom,iris-panel-cmd-sync-wait-broadcast;
+		/* the mipitx of iris will always works at video mode.
+		so the panel should be configured as video mode */
+		/* need to review*/
+		qcom,mdss-dsi-on-command-to-video-panel = [
+				29 01 00 00 00 00 06 F0 55 AA 52 08 04
+				29 01 00 00 00 00 02 EC 4C
+				29 01 00 00 00 00 06 F0 55 AA 52 08 00
+				29 01 00 00 00 00 02 B1 6E
+				29 01 00 00 00 00 05 FF AA 55 A5 80
+				29 01 00 00 00 00 02 6F 0B
+				29 01 00 00 00 00 02 F7 E0
+				29 01 00 00 00 00 05 FF AA 55 A5 00
+				29 01 00 00 00 00 06 F0 55 AA 52 00 00
+				15 01 00 00 00 00 02 62 01
+				15 01 00 00 00 00 02 35 00
+				15 01 00 00 00 00 02 51 00
+				15 01 00 00 00 00 02 53 2C
+				15 01 00 00 00 00 02 55 00
+				05 01 00 00 40 00 01 11
+				05 01 00 00 00 00 01 29
+				13 01 00 00 00 00 01 6C
+		];
+		qcom,mdss-dsi-on-command-to-video-panel-state = "dsi_lp_mode";
+		/* need to review*/
+		qcom,mdss-dsi-off-command-to-video-panel = [
+			15 01 00 00 00 00 02 62 00
+			05 01 00 00 00 00 01 28
+			05 01 00 00 64 00 01 10
+			13 01 00 00 00 00 01 6C
+		];
+		qcom,mdss-dsi-off-command-to-video-panel-state = "dsi_hs_mode";
+		/* configure mipirx of iris to support command mode */
+		/* need to review*/
+		qcom,mdss-dsi-on-command-to-iris-mipirx = [
+			15 01 00 00 01 00 02 3a 77 /* rgb_888 */
+			15 01 00 00 01 00 02 35 00 /* set tearing on */
+			39 01 00 00 01 00 05 2a 00 00 05 ff
+			39 01 00 00 01 00 05 2b 00 00 07 ff
+		];
+		qcom,mdss-dsi-on-command-to-iris-mipirx-state = "dsi_hs_mode";
+
+		/* iris2 sys */
+		qcom,iris-dpll-clk = <117861120>;
+		qcom,iris-dpll0 = <0xa>;
+		qcom,iris-dpll1 = <0x241301>;
+		qcom,iris-dpll2 = <0xd4e3bc>;
+
+		/*iris2p sys*/
+		qcom,iris-pll-setting = <
+			0x0002 0x381101 0x763BFB	/*PPLL_CTRL0 PPLL_CTRL1 PPLL_CTRL2*/
+			0x2002 0x1B1101 0xF538EF	/*DPLL_CTRL0 DPLL_CTRL1 DPLL_CTRL2*/
+			0x0002 0x3e0901 0x800000	/*MPLL_CTRL0 MPLL_CTRL1 MPLL_CTRL2*/
+			0x0002 0x000001 0x000000 	/*TXPLL_DIV  TXPLL_SEL  reserved*/
+		>;
+		qcom,iris-clock-setting = [0a 0a 03 01 03 00]; /* Dclk Inclk Mcuclk Pclk Mclk Escclk */
+
+		/* iris mipi rx */
+		qcom,mipirx-dsi-functional-program = <0x64>;
+		qcom,mipirx-data-lane-timing-param = <0xff07>;
+		qcom,mipirx-eot-ecc-crc-disable = <1>;
+
+		/* iris2 mipi tx */
+		qcom,mipitx-dsi-functional-program = <0x6204>;
+		qcom,mipitx-phy-pll-ratio = <19>;
+		qcom,mipitx-phy-byteclk = <91200000>;
+		qcom,mipitx-hs-transmit-timeout = <0x5cc600>;
+		qcom,mipitx-lp-receive-timeout = <0x26>;
+		qcom,mipitx-hs-lp-switching-time-count = <0x27>;
+		qcom,mipitx-pll-lock-count = <0x780>;
+		qcom,mipitx-clock-lane-switching-time-count = <0x360019>;
+		qcom,mipitx-lp-equivalent-byteclk = <0x5>;
+		qcom,mipitx-dphy-param = <0xe070e01>;
+		qcom,mipitx-data-lane-timing-param = <0xa051b02>;
+
+		/* iris2p mipi tx */
+		qcom,mipitx-dsi-tx-ctrl = <0xA00C039>;
+		qcom,mipitx-hs-tx-timer = <0x668A00>;
+		qcom,mipitx-bta-lp-timer = <0xFFFF17>;
+		qcom,mipitx-initialization-reset-timer = <0xA8C0780>;
+		qcom,mipitx-dphy-timing-margin = <0x40401>;
+		qcom,mipitx-lp-timing-para = <0xD240006>;
+		qcom,mipitx-data-lane-timing-param1 = <0x10090E04>;
+		qcom,mipitx-clock-lane-timing-param = <0x10092206>;
+		qcom,mipitx-dphy-pll-para = <0x780>;
+		qcom,mipitx-dphy-trim-1 = <0xEDB5384A>;
+
+		/* iris out timing */
+		qcom,iris-out-panel-width = <768>;
+		qcom,iris-out-panel-height = <2048>;
+
+		/* iris2 out timing */
+		qcom,iris-out-h-front-porch = <100>;
+		qcom,iris-out-h-back-porch = <64>;
+		qcom,iris-out-h-pulse-width = <4>;
+		qcom,iris-out-v-back-porch = <32>;
+		qcom,iris-out-v-front-porch = <16>;
+		qcom,iris-out-v-pulse-width = <2>;
+		qcom,iris-delta-period-max = <62>;
+		qcom,iris-delta-period-min = <4>;
+
+		/* iris2p out timing */
+		qcom,iris2p-out-h-pulse-width = <12>;
+		qcom,iris2p-out-h-back-porch = <96>;
+		qcom,iris2p-out-h-front-porch = <108>;
+		qcom,iris2p-out-v-pulse-width = <2>;
+		qcom,iris2p-out-v-back-porch = <33>;
+		qcom,iris2p-out-v-front-porch = <190>;
+		qcom,iris2p-delta-period-max = <38>;
+		qcom,iris2p-delta-period-min = <39>;
+	};
+};

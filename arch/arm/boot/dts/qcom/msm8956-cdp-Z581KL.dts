@@ -1,0 +1,236 @@
+/*
+ * Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+
+#include "msm8956.dtsi"
+#include "msm8956-cdp.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8956 CDP";
+	compatible = "qcom,msm8956-cdp", "qcom,msm8956", "qcom,cdp";
+	qcom,board-id= <1 0>;
+};
+
+/* TOUCH START */
+
+&i2c_4 { /* BLSP1 QUP4 */
+        focaltech@38{
+                compatible = "focaltech,fts";
+                reg = <0x38>;
+                interrupt-parent = <&msm_gpio>;
+                interrupts = <65 0x2008>;
+                focaltech,name = "fts";
+                focaltech,family-id = <0x54>;
+                focaltech,power-gpio = <&msm_gpio 17 0x0>;
+                focaltech,reset-gpio = <&msm_gpio 64 0x0>;
+                focaltech,irq-gpio =<&msm_gpio 65 0x2008>;
+                focaltech,tpid-gpio = <&msm_gpio 38 0x00>;
+                focaltech,lcmid-gpio = <&msm_gpio 126 0x00>;
+                focaltech,id1-gpio = <&msm_gpio 109 0x00>;
+                focaltech,id2-gpio = <&msm_gpio 114 0x00>;
+                focaltech,id3-gpio = <&msm_gpio 121 0x00>;
+                focaltech,display-coords = <0 0 1536 2048>;
+                focaltech,panel-coords = <0 0 1080 2000>;
+                focaltech,button-map= <70 150 907>;
+                focaltech,no-force-update; focaltech,i2c-pull-up;
+                focaltech,group-id = <1>;
+                focaltech,hard-reset-delay-ms = <20>;
+                focaltech,soft-reset-delay-ms = <200>;
+                focaltech,num-max-touches = <10>;
+                focaltech,fw-name = "FT_Upgrade_App.i";
+                focaltech,fw-delay-aa-ms = <50>;
+                focaltech,fw-delay-55-ms = <30>;
+                focaltech,fw-upgrade-id1 = <0x79>;
+                focaltech,fw-upgrade-id2 = <0x03>;
+                focaltech,fw-delay-readid-ms = <10>;
+                focaltech,fw-delay-era-flsh-ms = <2000>;
+        };
+};
+
+/* TOUCH END */
+
+/* USB Start */
+
+&soc {
+    usb-dpn-sel-pin {
+        qcom,pins = <&gp 115>;
+        qcom,num-qrp-pins = <1>;
+        qcom,pin-func = <0>;
+        label = "usb-dpn-sel-pin";
+        usbdepsel_default: default {
+            drive-strength = <8>;
+            bias-pull-down;
+        };
+    };
+};
+
+&usb_otg {
+    qcom,usb_dpn_sel-gpio = <&msm_gpio 115 0>;
+};
+
+&i2c_2 {
+    usb-type-c-ti@60 {
+        compatible = "ti,usb-type-c";
+        reg = <0x60>;
+        interrupt-parent = <&msm_gpio>;
+        interrupts = <36 2>;    /* MSM GPIO 36, high-to-low edge triggered */
+        ti,enb-gpio = <&msm_gpio 21 1>; /* low active */
+        pinctrl-names = "default";
+        pinctrl-0 = <&usbc_int_default>;
+	ti,usb-ccirq = <&msm_gpio 36 1>;
+    };
+
+    ti-tps6128x@75 {
+        compatible = "ti,tps6128x";
+        reg = <0x75>;
+    };
+
+    upi-us5587@38 {
+        compatible = "upi,us5587";
+        reg = <0x38>;
+	dpm_sw_en = <&msm_gpio 115 0>;
+	 /*shilun*/
+        qcom,adcpwren_pmi_gp1 = <&pmi8950_gpios 1 0>;
+    };
+};
+/* USB End */
+
+/* DISPLAY START*/
+
+#include "dsi-panel-tianma-r63319-dualmipi-1536x2048-video.dtsi"
+#include "dsi-panel-tianma-r63319-dualmipi-1536x2048-cmd.dtsi"
+
+&dsi_tianma_r63319_dualmipi_1536x2048_video {
+/*  qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;*/
+    qcom,panel-supply-entries = <&dsi_panel_pwr_supply_zt581kl>;
+    qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+    qcom,mdss-dsi-bl-min-level = <1>;
+    qcom,mdss-dsi-bl-max-level = <4095>;
+/*  qcom,mdss-dsi-pan-enable-dynamic-fps;*/
+/*  qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_hfp";*/
+};
+
+&dsi_tianma_r63319_dualmipi_1536x2048_cmd {
+/*  qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;*/
+qcom,panel-supply-entries = <&dsi_panel_pwr_supply_zt581kl>;
+qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+qcom,mdss-dsi-bl-min-level = <1>;
+qcom,mdss-dsi-bl-max-level = <4095>;
+/*  qcom,mdss-dsi-pan-enable-dynamic-fps;*/
+/*  qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_hfp";*/
+};
+
+&soc {
+    tlmm_pinmux: pinctrl@1000000 {
+        /delete-node/ pmx_nfc_reset;
+        /delete-node/ tpiu_seta_14;
+    };
+};
+
+&soc {
+    iris2_io{
+	 compatible = "pw,iris2_io";
+	 qcom,iris-1v1-1v8-en-gpio = <&msm_gpio 20 0>;
+	 qcom,iris-rst-gpio = <&msm_gpio 69 0>;
+	 clocks = <&clock_gcc clk_bb_clk2>;
+	 clock-names = "iris2_clk";
+    };
+};
+
+&pmx_mdss {
+    qcom,num-grp-pins = <2>;
+    qcom,pins = <&gp 25>, <&gp 126>;
+};
+
+&mdss_dsi0 {
+    qcom,dsi-pref-prim-pan = <&dsi_tianma_r63319_dualmipi_1536x2048_video>;
+    qcom,dsi-pref-prim-pan-with-iris = <&dsi_tianma_r63319_dualmipi_1536x2048_cmd>;
+
+    qcom,platform-reset-gpio = <&msm_gpio 25 0>;
+    /delete-property/ qcom,platform-bklight-en-gpio;
+    /delete-property/ qcom,panel-mode-gpio;
+    qcom,panel-id-gpio = <&msm_gpio 126 0>;
+};
+
+&mdss_dsi1 {
+    qcom,dsi-pref-prim-pan = <&dsi_tianma_r63319_dualmipi_1536x2048_video>;
+    qcom,dsi-pref-prim-pan-with-iris = <&dsi_tianma_r63319_dualmipi_1536x2048_cmd>;
+
+    qcom,platform-reset-gpio = <&msm_gpio 25 0>;
+    /delete-property/ qcom,platform-bklight-en-gpio;
+    /delete-property/ qcom,panel-mode-gpio;
+    qcom,panel-id-gpio = <&msm_gpio 126 0>;
+};
+
+&soc {
+    dsi_panel_pwr_supply_zt581kl: dsi_panel_pwr_supply_zt581kl {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        qcom,panel-supply-entry@0 {
+            reg = <0>;
+            qcom,supply-name = "vddio";
+            qcom,supply-min-voltage = <1800000>;
+            qcom,supply-max-voltage = <1800000>;
+            qcom,supply-enable-load = <100000>;
+            qcom,supply-disable-load = <100>;
+        };
+
+        qcom,panel-supply-entry@1 {
+            reg = <1>;
+            qcom,supply-name = "lab";
+            qcom,supply-min-voltage = <4600000>;
+            qcom,supply-max-voltage = <6000000>;
+            qcom,supply-enable-load = <100000>;
+            qcom,supply-disable-load = <100>;
+        };
+
+        qcom,panel-supply-entry@2 {
+            reg = <2>;
+            qcom,supply-name = "ibb";
+            qcom,supply-min-voltage = <4600000>;
+            qcom,supply-max-voltage = <6000000>;
+            qcom,supply-enable-load = <100000>;
+            qcom,supply-disable-load = <100>;
+            qcom,supply-post-on-sleep = <20>;
+        };
+    };
+
+    mdss_mdp: qcom,mdss_mdp@1a00000 {
+        mdss_fb0: qcom,mdss_fb_primary {
+            /delete-property/ qcom,mdss-fb-splash-logo-enabled;
+        };
+    };
+};
+
+/* DISPLAY END*/
+/* Sensor Start */
+&i2c_6 { /* BLSP2 QUP2 Cap Senosr */
+	microchip@28 {
+		compatible = "microchip,cap1106";
+		reg = <0x28>;
+		interrupt-parent = <&msm_gpio>;
+		interrupts = <135 0x2008>;
+		vdd-supply = <&pm8950_l13>;
+		vio-supply = <&pm8950_l5>;
+		/* pins used by touchscreen */
+		microchip,gpio-irq = <&msm_gpio 135 0x2002>;
+	};
+};
+/* Sensor End */
+
+&sdhc_2 {
+       /* apply hardware reset */
+       cap-hw-reset;
+};

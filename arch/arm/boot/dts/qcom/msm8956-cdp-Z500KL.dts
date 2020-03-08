@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+
+#include "msm8956.dtsi"
+#include "msm8956-cdp.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8956 CDP";
+	compatible = "qcom,msm8956-cdp", "qcom,msm8956", "qcom,cdp";
+	qcom,board-id= <1 0>;
+};
+
+&i2c_4 { /* BLSP1 QUP4 */
+	atmel@4a{
+		compatible = "atmel,maxtouch";
+		reg = <0x4a>;
+		interrupt-parent = <&msm_gpio>;
+		interrupts = <65 0x2008>;
+		avdd-supply = <&pm8950_l10>;
+		vdd-supply = <&pm8950_l6>;
+		atmel,input_name = "atmel_mxt_ts";
+		atmel,power-gpio = <&msm_gpio 17 0x0>;
+		atmel,reset-gpio = <&msm_gpio 64 0x0>;
+		atmel,irq-gpio =<&msm_gpio 65 0x2008>;
+		atmel,tpid-gpio = <&msm_gpio 38 0x00>;
+		atmel,id1-gpio = <&msm_gpio 109 0x00>;
+		atmel,id2-gpio = <&msm_gpio 114 0x00>;
+		atmel,id3-gpio = <&msm_gpio 121 0x00>;
+		atmel,display-coords = <0 0 1536 2048>;
+		atmel,panel-coords = <0 0 1080 2000>;
+	};
+};
+
+&i2c_2 {
+
+    ti-tps6128x@75 {
+        compatible = "ti,tps6128x";
+        reg = <0x75>;
+    };
+
+    upi-us5587@38 {
+        compatible = "upi,us5587";
+        reg = <0x38>;
+        dpm_sw_en = <&msm_gpio 115 0>;
+         /*shilun*/
+        qcom,adcpwren_pmi_gp1 = <&pmi8950_gpios 1 0>;
+    };
+};
+

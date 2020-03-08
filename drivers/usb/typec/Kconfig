@@ -1,0 +1,15 @@
+config TYPEC
+	bool "support Type C feature"
+	default n
+	---help---
+	  Say Y here to support Type C feature
+
+config TYPEC_ID_HW_CTRL
+	bool "USB ID is control by hardware"
+	default n
+	---help---
+	  Say Y here if your platform's USB ID pin is control by H/W.
+
+source "drivers/usb/typec/tusb320/Kconfig"
+source "drivers/usb/typec/fusb302/Kconfig"
+source "drivers/usb/typec/rt171x/Kconfig"
