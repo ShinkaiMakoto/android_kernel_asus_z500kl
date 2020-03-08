@@ -1,0 +1,1 @@
+# android_kernel_asus_z500kl
